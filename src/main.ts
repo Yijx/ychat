@@ -1,4 +1,7 @@
 import { app, BrowserWindow } from 'electron'
+import { ChatCompletion } from '@baiducloud/qianfan'
+import { OpenAI } from 'openai'
+import 'dotenv/config'
 import path from 'node:path'
 import started from 'electron-squirrel-startup'
 
@@ -7,7 +10,7 @@ if (started) {
   app.quit()
 }
 
-const createWindow = () => {
+const createWindow = async () => {
   // Create the browser window.
   const mainWindow = new BrowserWindow({
     width: 1024,
