@@ -45,4 +45,10 @@ const emit = defineEmits<{
 const model = defineModel<string>()
 const fileInput = ref<HTMLInputElement | null>(null)
 const imagePreview = ref('')
+
+const onCreate = () => {
+  if (model.value && model.value.trim() !== '') {
+    emit('create', model.value)
+  }
+}
 </script>

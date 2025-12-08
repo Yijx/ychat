@@ -10,5 +10,5 @@
   },
   "editor.formatOnSave": true,
   "editor.defaultFormatter": "esbenp.prettier-vscode",
-  "cSpell.words": ["baiducloud", "iconify", "qianfan"]
+  "cSpell.words": ["baiducloud", "dexie", "iconify", "qianfan", "ychat"]
 }
