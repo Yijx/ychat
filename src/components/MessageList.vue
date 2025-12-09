@@ -1,5 +1,5 @@
 <template>
-  <div class="message-list">
+  <div class="message-list" ref="_ref">
     <div class="message-item mb-3" v-for="message in messages" :key="message.id">
       <div class="flex" :class="{ 'justify-end': message.type === 'question' }">
         <div>
@@ -13,6 +13,12 @@
             class="message-question bg-green-700 text-white p-2 rounded-md"
             v-if="message.type === 'question'"
           >
+            <img
+              v-if="message.imagePath"
+              :src="`safe-file://${message.imagePath}`"
+              alt="Message image"
+              class="h-24 w-24 object-cover rounded block"
+            />
             {{ message.content }}
           </div>
           <div class="message-question bg-gray-200 text-gray-700 p-2 rounded-md" v-else>
@@ -20,7 +26,11 @@
               <Icon icon="eos-icons:three-dots-loading"></Icon>
             </template>
             <template v-else>
-              {{ message.content }}
+              <vue-markdown
+                :source="message.content"
+                :plugins="plugins"
+                class="prose prose-slate prose-headings:my-2 prose-li:my-0 prose-ul:my-1 prose-p:my-1 prose-pre:p-0"
+              />
             </template>
           </div>
         </div>
@@ -31,5 +41,15 @@
 
 <script lang="ts" setup>
 import type { MessageProps } from '@/types'
+import { ref } from 'vue'
+import VueMarkdown from 'vue-markdown-render'
+import markdownItHighlightjs from 'markdown-it-highlightjs'
+const plugins = [markdownItHighlightjs]
+const _ref = ref<HTMLDivElement>()
+
 defineProps<{ messages: MessageProps[] }>()
+
+defineExpose({
+  ref: _ref,
+})
 </script>

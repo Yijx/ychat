@@ -6,7 +6,13 @@
       <img :src="imagePreview" alt="Preview" class="h-24 w-24 object-cover rounded" />
     </div>
     <div class="flex items-center">
-      <input type="file" accept="image/*" ref="fileInput" class="hidden" />
+      <input
+        type="file"
+        accept="image/*"
+        ref="fileInput"
+        class="hidden"
+        @change="handleImageUpload"
+      />
       <Icon
         icon="radix-icons:image"
         width="24"
@@ -17,6 +23,7 @@
             ? 'text-gray-300 cursor-not-allowed'
             : 'text-gray-400 cursor-pointer hover:text-gray-600',
         ]"
+        @click="triggerFileInput"
       />
       <input
         class="outline-none border-0 flex-1 bg-white focus:ring-0"
@@ -45,10 +52,37 @@ const emit = defineEmits<{
 const model = defineModel<string>()
 const fileInput = ref<HTMLInputElement | null>(null)
 const imagePreview = ref('')
+let selectedImage: File | null = null
+
+const triggerFileInput = () => {
+  if (!props.disabled) {
+    fileInput.value?.click()
+  }
+}
+const handleImageUpload = (event: Event) => {
+  const target = event.target as HTMLInputElement
+  if (target.files && target.files.length > 0) {
+    console.log(target.files[0])
+    selectedImage = target.files[0]
+    const reader = new FileReader()
+    reader.onload = (e) => {
+      console.log(e.target?.result)
+      imagePreview.value = e.target?.result as string
+    }
+    reader.readAsDataURL(selectedImage)
+  }
+}
 
 const onCreate = () => {
   if (model.value && model.value.trim() !== '') {
-    emit('create', model.value)
+    if (selectedImage) {
+      const filePath = window.electronAPI.getFilePath(selectedImage)
+      emit('create', model.value, filePath)
+    } else {
+      emit('create', model.value)
+    }
+    selectedImage = null
+    imagePreview.value = ''
   }
 }
 </script>

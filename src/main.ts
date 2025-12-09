@@ -1,11 +1,14 @@
 import type { CreateChatProps } from '@/types'
 import type { Resp, RespBase } from '@baiducloud/qianfan/dist/src/interface'
-import { app, BrowserWindow, ipcMain } from 'electron'
+import { convertMessages } from './helpers'
+import { app, BrowserWindow, ipcMain, protocol, net } from 'electron'
 import { ChatCompletion } from '@baiducloud/qianfan'
 import { OpenAI } from 'openai'
-import 'dotenv/config'
+import url from 'url'
+import fs from 'fs/promises'
 import path from 'node:path'
 import started from 'electron-squirrel-startup'
+import 'dotenv/config'
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (started) {
@@ -29,14 +32,42 @@ const createWindow = async () => {
     mainWindow.loadFile(path.join(__dirname, `../renderer/${MAIN_WINDOW_VITE_NAME}/index.html`))
   }
 
+  // TIPS: 由于直接返回本地文件路径存在安全风险，通过自定义协议（由file://改为safe-file://）读取文件内容并返回
+  protocol.handle('safe-file', async (request) => {
+    // request.url example:
+    // safe-file:///Users/jiaxunyang/Library/Application%20Support/ychat/images/images.webp
+    const filePath = decodeURIComponent(request.url.slice('safe-file://'.length))
+    // const data = await fs.readFile(filePath)
+    // return new Response(data, {
+    //   status: 200,
+    //   headers: {
+    //     'Content-Type': lookup(filePath) as string
+    //   }
+    // })
+    const newFilePath = url.pathToFileURL(filePath).toString()
+    return net.fetch(newFilePath)
+  })
+
+  ipcMain.handle('copy-image-to-user-dir', async (event, sourcePath: string) => {
+    const userDataPath = app.getPath('userData')
+    const imagesDir = path.join(userDataPath, 'images')
+    await fs.mkdir(imagesDir, { recursive: true })
+    const fileName = path.basename(sourcePath)
+    const destPath = path.join(imagesDir, fileName)
+    await fs.copyFile(sourcePath, destPath)
+    return destPath
+  })
+
   ipcMain.on('start-chat', async (event, data: CreateChatProps) => {
     const { providerName, messages, messageId, selectedModel } = data
+    const convertedMessages = await convertMessages(messages)
+
     if (providerName === 'qianfan') {
       const client = new ChatCompletion()
       const stream = await client.chat(
         {
           stream: true,
-          messages,
+          messages: convertedMessages as any,
         },
         selectedModel,
       )
@@ -57,7 +88,7 @@ const createWindow = async () => {
         baseURL: 'https://dashscope.aliyuncs.com/compatible-mode/v1',
       })
       const stream = await client.chat.completions.create({
-        messages: messages as any,
+        messages: convertedMessages as any,
         model: selectedModel,
         stream: true,
       })
