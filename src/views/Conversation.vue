@@ -4,7 +4,9 @@
     v-if="conversation"
   >
     <h3 class="font-semibold text-gray-900">{{ conversation.title }}</h3>
-    <span class="text-sm text-gray-500">{{ conversation.updatedAt }}</span>
+    <span class="text-sm text-gray-500">{{
+      dayjs(conversation.updatedAt).format('YYYY-MM-DD')
+    }}</span>
   </div>
   <div class="w-[80%] mx-auto h-[75%] overflow-y-auto pt-2">
     <MessageList :messages="filteredMessages" ref="messageListRef" />
@@ -26,6 +28,7 @@ import { useMessageStore } from '@/stores/message'
 import { useProviderStore } from '@/stores/provider'
 import MessageInput from '@/components/MessageInput.vue'
 import MessageList from '@/components/MessageList.vue'
+import dayjs from 'dayjs'
 
 const route = useRoute()
 const conversationStore = useConversationStore()

@@ -7,7 +7,7 @@
             class="text-sm text-gray-500 mb-2"
             :class="{ 'text-right': message.type === 'question' }"
           >
-            {{ message.createdAt }}
+            {{ dayjs(message.createdAt).format('YYYY-MM-DD HH:mm:ss') }}
           </div>
           <div
             class="message-question bg-green-700 text-white p-2 rounded-md"
@@ -44,6 +44,7 @@ import type { MessageProps } from '@/types'
 import { ref } from 'vue'
 import VueMarkdown from 'vue-markdown-render'
 import markdownItHighlightjs from 'markdown-it-highlightjs'
+import dayjs from 'dayjs'
 const plugins = [markdownItHighlightjs]
 const _ref = ref<HTMLDivElement>()
 

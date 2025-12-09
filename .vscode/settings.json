@@ -12,6 +12,8 @@
   "editor.defaultFormatter": "esbenp.prettier-vscode",
   "cSpell.words": [
     "baiducloud",
+    "dashscope",
+    "deepseek",
     "dexie",
     "highlightjs",
     "iconify",
