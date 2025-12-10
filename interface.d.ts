@@ -1,4 +1,4 @@
-import { CreateChatProps, OnUpdatedCallback, AppConfig } from '@/types'
+import { CreateChatProps, OnUpdatedCallback, AppConfig } from '@/types/base'
 
 export interface IElectronAPI {
   startChat: (data: CreateChatProps) => void

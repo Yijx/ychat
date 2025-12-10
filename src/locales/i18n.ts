@@ -1,5 +1,5 @@
 import { createI18n } from 'vue-i18n'
-import type { Language } from '../types'
+import type { Language } from '../types/base'
 import zh from './zh.json'
 import en from './en.json'
 // 定义消息类型

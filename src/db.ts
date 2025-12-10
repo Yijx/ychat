@@ -1,5 +1,5 @@
 import { Dexie, type EntityTable } from 'dexie'
-import type { ProviderProps, ConversationProps, MessageProps } from '@/types'
+import type { ProviderProps, ConversationProps, MessageProps } from '@/types/base'
 import { providers } from '@/testData'
 
 const db = new Dexie('yChatDatabase') as Dexie & {

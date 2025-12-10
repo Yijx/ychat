@@ -1,4 +1,4 @@
-import type { ChatMessageProps, UniversalChunkProps } from '@/types'
+import type { ChatMessageProps, UniversalChunkProps } from '@/types/base'
 import type { LLMProvider } from '@/providers/types'
 import { convertMessages } from '@/utils/helpers'
 import OpenAI from 'openai'

@@ -1,4 +1,4 @@
-import type { ConversationProps } from '@/types'
+import type { ConversationProps } from '@/types/base'
 import { defineStore } from 'pinia'
 import { ref, computed } from 'vue'
 import { db } from '@/db'

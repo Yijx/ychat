@@ -10,7 +10,7 @@
 </template>
 
 <script setup lang="ts">
-import type { ProviderProps } from '@/types'
+import type { ProviderProps } from '@/types/base'
 import { ref, onMounted, computed } from 'vue'
 import { db } from '@/db'
 import { useRouter } from 'vue-router'

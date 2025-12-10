@@ -1,4 +1,4 @@
-import type { CreateChatProps, OnUpdatedCallback, AppConfig } from '@/types'
+import type { CreateChatProps, OnUpdatedCallback, AppConfig } from '@/types/base'
 import { ipcRenderer, contextBridge, webUtils } from 'electron'
 
 contextBridge.exposeInMainWorld('electronAPI', {

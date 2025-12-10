@@ -20,7 +20,7 @@
   </div>
 </template>
 <script setup lang="ts">
-import type { MessageProps, MessageListInstance, MessageStatus } from '@/types'
+import type { MessageProps, MessageListInstance, MessageStatus } from '@/types/base'
 import { useRoute } from 'vue-router'
 import { ref, watch, onMounted, computed, nextTick } from 'vue'
 import { useConversationStore } from '@/stores/conversation'

@@ -5,6 +5,10 @@
   },
   "settings": {
     "title": "设置",
+    "tabs": {
+      "general": "通用",
+      "models": "模型"
+    },
     "language": {
       "title": "语言设置",
       "description": "选择应用程序的显示语言",
@@ -19,6 +23,15 @@
       "previewText": "这是一段预览文字，用于展示当前字体大小的效果。",
       "decrease": "减小",
       "increase": "增大"
+    },
+    "models": {
+      "title": "模型配置",
+      "description": "配置各模型提供商的 API 密钥",
+      "accessKey": "Access Key",
+      "secretKey": "Secret Key",
+      "baseUrl": "Base URL",
+      "save": "保存配置",
+      "reset": "清除配置"
     },
     "buttons": {
       "reset": "恢复默认",

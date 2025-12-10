@@ -20,7 +20,7 @@
   </div>
 </template>
 <script lang="ts" setup>
-import type { ConversationProps } from '@/types'
+import type { ConversationProps } from '@/types/base'
 import { useConversationStore } from '@/stores/conversation'
 import { useRouter } from 'vue-router'
 import dayjs from 'dayjs'

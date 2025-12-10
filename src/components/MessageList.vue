@@ -40,7 +40,7 @@
 </template>
 
 <script lang="ts" setup>
-import type { MessageProps } from '@/types'
+import type { MessageProps } from '@/types/base'
 import { ref } from 'vue'
 import VueMarkdown from 'vue-markdown-render'
 import markdownItHighlightjs from 'markdown-it-highlightjs'

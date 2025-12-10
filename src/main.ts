@@ -1,4 +1,4 @@
-import type { CreateChatProps, AppConfig } from '@/types'
+import type { CreateChatProps, AppConfig } from '@/types/base'
 import { app, BrowserWindow, ipcMain, protocol, net } from 'electron'
 import { createProvider } from '@/providers/createProvider'
 import url from 'url'

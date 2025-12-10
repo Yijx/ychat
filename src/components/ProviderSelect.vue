@@ -37,7 +37,7 @@
   </div>
 </template>
 <script lang="ts" setup>
-import type { ProviderProps } from '@/types'
+import type { ProviderProps } from '@/types/base'
 import {
   SelectContent,
   SelectGroup,

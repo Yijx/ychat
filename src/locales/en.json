@@ -5,6 +5,10 @@
   },
   "settings": {
     "title": "Settings",
+    "tabs": {
+      "general": "General",
+      "models": "Models"
+    },
     "language": {
       "title": "Language Settings",
       "description": "Choose the display language for the application",
@@ -19,6 +23,15 @@
       "previewText": "This is a preview text to show the effect of the current font size.",
       "decrease": "Decrease",
       "increase": "Increase"
+    },
+    "models": {
+      "title": "Model Configuration",
+      "description": "Configure API keys for model providers",
+      "accessKey": "Access Key",
+      "secretKey": "Secret Key",
+      "baseUrl": "Base URL",
+      "save": "Save Configuration",
+      "reset": "Clear Configuration"
     },
     "buttons": {
       "reset": "Reset to Default",

@@ -1,4 +1,4 @@
-import type { ProviderProps } from '@/types'
+import type { ProviderProps } from '@/types/base'
 import { defineStore } from 'pinia'
 import { db } from '@/db'
 import { ref } from 'vue'

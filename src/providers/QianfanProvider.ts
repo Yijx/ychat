@@ -1,4 +1,4 @@
-import type { ChatMessageProps, UniversalChunkProps, BaiduChunkProps } from '@/types'
+import type { ChatMessageProps, UniversalChunkProps, BaiduChunkProps } from '@/types/base'
 import type { LLMProvider } from '@/providers/types'
 import { ChatCompletion } from '@baiducloud/qianfan'
 
