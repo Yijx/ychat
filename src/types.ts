@@ -79,3 +79,18 @@ export const DEFAULT_CONFIG: AppConfig = {
   fontSize: 14,
   providerConfigs: {},
 }
+
+// 语言类型定义
+export type Language = 'zh' | 'en'
+
+// 语言显示名称映射
+export const LANGUAGE_NAMES: Record<Language, string> = {
+  zh: '中文',
+  en: 'English',
+}
+
+// i18n 区域设置映射
+export const I18N_LOCALES: Record<Language, string> = {
+  zh: 'zh',
+  en: 'en',
+}

@@ -1,4 +1,4 @@
-import type { CreateChatProps, OnUpdatedCallback } from '@/types'
+import type { CreateChatProps, OnUpdatedCallback, AppConfig } from '@/types'
 import { ipcRenderer, contextBridge, webUtils } from 'electron'
 
 contextBridge.exposeInMainWorld('electronAPI', {
@@ -8,4 +8,10 @@ contextBridge.exposeInMainWorld('electronAPI', {
   copyImageToUserDir: (sourcePath: string) =>
     ipcRenderer.invoke('copy-image-to-user-dir', sourcePath),
   getFilePath: (file: File) => webUtils.getPathForFile(file),
+
+  // 配置相关 API
+  getConfig: () => ipcRenderer.invoke('get-config'),
+  saveConfig: (config: AppConfig) => ipcRenderer.invoke('save-config', config),
+  updateConfig: (partialConfig: Partial<AppConfig>) =>
+    ipcRenderer.invoke('update-config', partialConfig),
 })

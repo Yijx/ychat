@@ -1,4 +1,4 @@
-import type { CreateChatProps } from '@/types'
+import type { CreateChatProps, AppConfig } from '@/types'
 import { app, BrowserWindow, ipcMain, protocol, net } from 'electron'
 import { createProvider } from '@/providers/createProvider'
 import url from 'url'
@@ -10,6 +10,36 @@ import 'dotenv/config'
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (started) {
   app.quit()
+}
+
+// 配置文件路径
+const CONFIG_FILE_NAME = 'config.json'
+const getConfigPath = () => {
+  const userDataPath = app.getPath('userData')
+  return path.join(userDataPath, CONFIG_FILE_NAME)
+}
+
+// 读取配置文件
+const readConfig = async (): Promise<AppConfig> => {
+  try {
+    const configPath = getConfigPath()
+    const data = await fs.readFile(configPath, 'utf-8')
+    return JSON.parse(data)
+  } catch (error) {
+    // 如果文件不存在或读取失败，返回默认配置
+    return {
+      language: 'zh',
+      fontSize: 14,
+      providerConfigs: {},
+    }
+  }
+}
+
+// 保存配置文件
+const saveConfig = async (config: AppConfig): Promise<void> => {
+  const configPath = getConfigPath()
+  const data = JSON.stringify(config, null, 2)
+  await fs.writeFile(configPath, data, 'utf-8')
 }
 
 const createWindow = async () => {
@@ -53,6 +83,23 @@ const createWindow = async () => {
     const destPath = path.join(imagesDir, fileName)
     await fs.copyFile(sourcePath, destPath)
     return destPath
+  })
+
+  // 配置相关的 IPC 处理器
+  ipcMain.handle('get-config', async () => {
+    return await readConfig()
+  })
+
+  ipcMain.handle('save-config', async (event, config: AppConfig) => {
+    await saveConfig(config)
+    return { success: true }
+  })
+
+  ipcMain.handle('update-config', async (event, partialConfig: Partial<AppConfig>) => {
+    const currentConfig = await readConfig()
+    const newConfig = { ...currentConfig, ...partialConfig }
+    await saveConfig(newConfig)
+    return newConfig
   })
 
   ipcMain.on('start-chat', async (event, data: CreateChatProps) => {

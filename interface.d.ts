@@ -7,6 +7,7 @@ export interface IElectronAPI {
   onDeleteConversation: (callback: (id: number) => void) => void
   copyImageToUserDir: (sourcePath: string) => Promise<string>
   getConfig: () => Promise<AppConfig>
+  saveConfig: (config: AppConfig) => Promise<{ success: boolean }>
   updateConfig: (config: Partial<AppConfig>) => Promise<AppConfig>
   onMenuNewConversation: (callback: () => void) => void
   onMenuOpenSettings: (callback: () => void) => void

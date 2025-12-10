@@ -1,0 +1,36 @@
+{
+  "app": {
+    "newChat": "新建聊天",
+    "settings": "应用设置"
+  },
+  "settings": {
+    "title": "设置",
+    "language": {
+      "title": "语言设置",
+      "description": "选择应用程序的显示语言",
+      "options": {
+        "zh": "中文",
+        "en": "English"
+      }
+    },
+    "fontSize": {
+      "title": "字体大小",
+      "preview": "预览效果：",
+      "previewText": "这是一段预览文字，用于展示当前字体大小的效果。",
+      "decrease": "减小",
+      "increase": "增大"
+    },
+    "buttons": {
+      "reset": "恢复默认",
+      "save": "保存设置"
+    }
+  },
+  "components": {
+    "messageInput": {
+      "send": "发送"
+    },
+    "providerSelect": {
+      "placeholder": "请选择模型"
+    }
+  }
+}

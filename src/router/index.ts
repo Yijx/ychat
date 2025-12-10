@@ -3,10 +3,12 @@ import { createRouter, createMemoryHistory } from 'vue-router'
 import { useConversationStore } from '@/stores/conversation'
 import Home from '@/views/Home.vue'
 import Conversation from '@/views/Conversation.vue'
+import Settings from '@/views/Settings.vue'
 
 const routes: RouterOptions['routes'] = [
   { path: '/', component: Home },
   { path: '/conversation/:id', component: Conversation },
+  { path: '/settings', component: Settings },
 ]
 
 const router = createRouter({

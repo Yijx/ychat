@@ -1,0 +1,36 @@
+{
+  "app": {
+    "newChat": "New Chat",
+    "settings": "Settings"
+  },
+  "settings": {
+    "title": "Settings",
+    "language": {
+      "title": "Language Settings",
+      "description": "Choose the display language for the application",
+      "options": {
+        "zh": "Chinese",
+        "en": "English"
+      }
+    },
+    "fontSize": {
+      "title": "Font Size",
+      "preview": "Preview:",
+      "previewText": "This is a preview text to show the effect of the current font size.",
+      "decrease": "Decrease",
+      "increase": "Increase"
+    },
+    "buttons": {
+      "reset": "Reset to Default",
+      "save": "Save Settings"
+    }
+  },
+  "components": {
+    "messageInput": {
+      "send": "Send"
+    },
+    "providerSelect": {
+      "placeholder": "Select Model"
+    }
+  }
+}

@@ -32,7 +32,7 @@
         :disabled="disabled"
       />
       <Button icon-name="radix-icons:paper-plane" @click="onCreate" :disabled="disabled">
-        发送
+        {{ $t('components.messageInput.send') }}
       </Button>
     </div>
   </div>
