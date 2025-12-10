@@ -25,7 +25,9 @@ export const useConfigStore = defineStore('config', () => {
   // 保存配置到主进程
   const saveConfig = async () => {
     try {
-      await window.electronAPI.saveConfig(config.value)
+      // 转换为普通对象以避免 IPC 克隆错误
+      const plainConfig = JSON.parse(JSON.stringify(config.value))
+      await window.electronAPI.saveConfig(plainConfig)
     } catch (error) {
       console.error('Failed to save config:', error)
     }
@@ -34,7 +36,9 @@ export const useConfigStore = defineStore('config', () => {
   // 更新部分配置
   const updateConfig = async (partialConfig: Partial<AppConfig>) => {
     try {
-      const updatedConfig = await window.electronAPI.updateConfig(partialConfig)
+      // 转换为普通对象以避免 IPC 克隆错误
+      const plainConfig = JSON.parse(JSON.stringify(partialConfig))
+      const updatedConfig = await window.electronAPI.updateConfig(plainConfig)
       config.value = updatedConfig
 
       // 如果更新了语言，同步更新 i18n

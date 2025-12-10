@@ -42,5 +42,7 @@ onMounted(async () => {
   await initProviders()
   conversationStore.fetchConversations()
   providerStore.fetchProviders()
+
+  console.log('App mounted, config:', configStore.config)
 })
 </script>

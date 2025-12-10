@@ -1,9 +1,9 @@
 export interface ProviderConfigItem {
-  key: string
-  label: string
+  key: string // 配置项的唯一标识符
+  label: string // 配置项的显示名称
   value: string
-  type: 'text' | 'password' | 'number'
-  required?: boolean
+  type: 'text' | 'password' | 'number' // 配置项input框的类型
+  required?: boolean // 是否为必填项
   placeholder?: string
 }
 

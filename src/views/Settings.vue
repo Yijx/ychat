@@ -212,58 +212,32 @@
                 class="p-4 pt-0 border-t border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800"
               >
                 <div class="space-y-4">
-                  <div>
+                  <div
+                    v-for="configItem in getProviderConfigItems(provider.name)"
+                    :key="configItem.key"
+                  >
                     <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                      {{ $t('settings.models.accessKey') }}
+                      {{ configItem.label }}
                     </label>
                     <input
-                      type="text"
-                      :value="getProviderConfig(provider.name)?.accessKey || ''"
+                      :type="
+                        configItem.type === 'password'
+                          ? 'password'
+                          : configItem.type === 'number'
+                            ? 'number'
+                            : 'text'
+                      "
+                      :value="getProviderConfig(provider.name)?.[configItem.key] || ''"
                       @input="
                         updateProviderConfig(
                           provider.name,
-                          'accessKey',
+                          configItem.key,
                           ($event.target as HTMLInputElement).value,
                         )
                       "
                       class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                      :placeholder="'输入 ' + provider.title + ' 的 Access Key'"
-                    />
-                  </div>
-                  <div>
-                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                      {{ $t('settings.models.secretKey') }}
-                    </label>
-                    <input
-                      type="password"
-                      :value="getProviderConfig(provider.name)?.secretKey || ''"
-                      @input="
-                        updateProviderConfig(
-                          provider.name,
-                          'secretKey',
-                          ($event.target as HTMLInputElement).value,
-                        )
-                      "
-                      class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                      :placeholder="'输入 ' + provider.title + ' 的 Secret Key'"
-                    />
-                  </div>
-                  <div>
-                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                      {{ $t('settings.models.baseUrl') }}
-                    </label>
-                    <input
-                      type="text"
-                      :value="getProviderConfig(provider.name)?.baseUrl || ''"
-                      @input="
-                        updateProviderConfig(
-                          provider.name,
-                          'baseUrl',
-                          ($event.target as HTMLInputElement).value,
-                        )
-                      "
-                      class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                      :placeholder="'输入 ' + provider.title + ' 的 Base URL (可选)'"
+                      :placeholder="configItem.placeholder || ''"
+                      :required="configItem.required"
                     />
                   </div>
                   <div class="flex justify-end space-x-3 pt-2">
@@ -293,8 +267,9 @@
 <script lang="ts" setup>
 import { ref, onMounted, computed } from 'vue'
 import { useConfigStore } from '@/stores/config'
+import { useProviderStore } from '@/stores/provider'
 import { DEFAULT_CONFIG } from '@/types/base'
-import { providers } from '@/testData'
+import { providerConfigs } from '@/providers/providerConfig'
 import {
   RadioGroupRoot,
   RadioGroupItem,
@@ -313,16 +288,20 @@ import {
 } from 'radix-vue'
 
 const configStore = useConfigStore()
+const providerStore = useProviderStore()
 
 const selectedLanguage = ref<'zh' | 'en'>('zh')
 const selectedFontSize = ref(14)
 const activeTab = ref('general')
+
+const providers = computed(() => providerStore.items)
 
 // 加载配置
 onMounted(async () => {
   await configStore.loadConfig()
   selectedLanguage.value = configStore.language
   selectedFontSize.value = configStore.fontSize
+  await providerStore.fetchProviders()
 })
 
 // 保存设置
@@ -355,6 +334,10 @@ const decrementFontSize = () => {
 // 模型配置相关
 const getProviderConfig = (providerName: string) => {
   return configStore.config.providerConfigs[providerName]
+}
+
+const getProviderConfigItems = (providerName: string) => {
+  return providerConfigs[providerName] || []
 }
 
 const updateProviderConfig = (providerName: string, key: string, value: string) => {

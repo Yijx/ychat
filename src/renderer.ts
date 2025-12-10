@@ -1,12 +1,12 @@
 import { createApp } from 'vue'
 import { Icon } from '@iconify/vue'
 import { createPinia } from 'pinia'
+import { useConfigStore } from '@/stores/config'
 import router from '@/router'
 import i18n from '@/locales/i18n'
 import App from './App.vue'
 import './index.css'
 import 'highlight.js/styles/github-dark.min.css'
-import { useConfigStore } from '@/stores/config'
 
 const app = createApp(App)
 const pinia = createPinia()

@@ -21,9 +21,19 @@
             />
             {{ message.content }}
           </div>
-          <div class="message-question bg-gray-200 text-gray-700 p-2 rounded-md" v-else>
+          <div
+            class="message-answer p-2 rounded-md"
+            :class="{
+              'bg-red-100 text-red-700': message.status === 'error',
+              'bg-gray-200 text-gray-700': message.status !== 'error',
+            }"
+            v-else
+          >
             <template v-if="message.status === 'loading'">
               <Icon icon="eos-icons:three-dots-loading"></Icon>
+            </template>
+            <template v-else-if="message.status === 'error'">
+              <span>{{ message.content }}</span>
             </template>
             <template v-else>
               <vue-markdown
