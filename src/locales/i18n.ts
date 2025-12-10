@@ -1,7 +1,7 @@
 import { createI18n } from 'vue-i18n'
-import type { Language } from './types'
-import zh from './locales/zh.json'
-import en from './locales/en.json'
+import type { Language } from '../types'
+import zh from './zh.json'
+import en from './en.json'
 // 定义消息类型
 type MessageSchema = typeof zh
 

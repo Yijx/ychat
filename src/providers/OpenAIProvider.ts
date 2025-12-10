@@ -1,6 +1,6 @@
 import type { ChatMessageProps, UniversalChunkProps } from '@/types'
 import type { LLMProvider } from '@/providers/types'
-import { convertMessages } from '@/helpers'
+import { convertMessages } from '@/utils/helpers'
 import OpenAI from 'openai'
 
 const createOpenAIProvider = (apiKey: string, baseURL: string): LLMProvider => {
