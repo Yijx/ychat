@@ -3,7 +3,7 @@ import { CreateChatProps, OnUpdatedCallback, AppConfig } from '@/types/base'
 export interface IElectronAPI {
   startChat: (data: CreateChatProps) => void
   onUpdateMessage: (callback: OnUpdatedCallback) => any
-  showContextMenu: (id: number) => void
+  openContextMenu: (id: number) => void
   onDeleteConversation: (callback: (id: number) => void) => void
   copyImageToUserDir: (sourcePath: string) => Promise<string>
   getConfig: () => Promise<AppConfig>

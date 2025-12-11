@@ -1,5 +1,5 @@
-import type { CreateChatProps, AppConfig } from '@/types/base'
-import { app, BrowserWindow, ipcMain, protocol, net } from 'electron'
+import type { CreateChatProps, AppConfig, Language } from '@/types/base'
+import { app, BrowserWindow, ipcMain, protocol, net, Menu } from 'electron'
 import { createProvider } from '@/providers/createProvider'
 import { setupMenu } from '@/menu'
 import url from 'url'
@@ -7,6 +7,9 @@ import fs from 'fs/promises'
 import path from 'node:path'
 import started from 'electron-squirrel-startup'
 import 'dotenv/config'
+
+// 全局主窗口引用，用于更新菜单
+let mainWindow: BrowserWindow | null = null
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (started) {
@@ -43,9 +46,16 @@ const saveConfig = async (config: AppConfig): Promise<void> => {
   await fs.writeFile(configPath, data, 'utf-8')
 }
 
+// 更新菜单语言
+const updateMenuLanguage = (language: Language) => {
+  if (mainWindow) {
+    setupMenu(mainWindow, language)
+  }
+}
+
 const createWindow = async () => {
   // Create the browser window.
-  const mainWindow = new BrowserWindow({
+  const win = new BrowserWindow({
     width: 1024,
     height: 768,
     webPreferences: {
@@ -53,14 +63,19 @@ const createWindow = async () => {
     },
   })
 
+  // 存储全局引用
+  mainWindow = win
+
   // and load the index.html of the app.
   if (MAIN_WINDOW_VITE_DEV_SERVER_URL) {
-    mainWindow.loadURL(MAIN_WINDOW_VITE_DEV_SERVER_URL)
+    win.loadURL(MAIN_WINDOW_VITE_DEV_SERVER_URL)
   } else {
-    mainWindow.loadFile(path.join(__dirname, `../renderer/${MAIN_WINDOW_VITE_NAME}/index.html`))
+    win.loadFile(path.join(__dirname, `../renderer/${MAIN_WINDOW_VITE_NAME}/index.html`))
   }
 
-  setupMenu(mainWindow)
+  // 读取配置并设置菜单语言
+  const config = await readConfig()
+  setupMenu(win, config.language)
 
   // TIPS: 由于直接返回本地文件路径存在安全风险，通过自定义协议（由file://改为safe-file://）读取文件内容并返回
   protocol.handle('safe-file', async (request) => {
@@ -102,6 +117,10 @@ const createWindow = async () => {
     const currentConfig = await readConfig()
     const newConfig = { ...currentConfig, ...partialConfig }
     await saveConfig(newConfig)
+    // 如果语言发生变化，更新菜单
+    if (partialConfig.language && partialConfig.language !== currentConfig.language) {
+      updateMenuLanguage(partialConfig.language)
+    }
     return newConfig
   })
 
@@ -118,7 +137,7 @@ const createWindow = async () => {
           messageId,
           data: chunk,
         }
-        mainWindow.webContents.send('update-message', content)
+        win.webContents.send('update-message', content)
       }
     } catch (error) {
       console.error('Chat error:', error)
@@ -130,13 +149,39 @@ const createWindow = async () => {
           is_error: true,
         },
       }
-      mainWindow.webContents.send('update-message', errorContent)
+      win.webContents.send('update-message', errorContent)
+    }
+  })
+
+  // 上下文菜单 IPC
+  ipcMain.on('open-context-menu', (event, id: number) => {
+    const menu = Menu.buildFromTemplate([
+      {
+        label: '删除对话',
+        click: () => {
+          // 获取当前焦点窗口
+          const focusedWindow = BrowserWindow.getFocusedWindow()
+          if (focusedWindow && !focusedWindow.isDestroyed()) {
+            focusedWindow.webContents.send('delete-conversation', id)
+            console.log('删除对话:', id)
+          } else {
+            console.warn('无法发送删除事件：焦点窗口不存在或已销毁')
+          }
+        },
+      },
+    ])
+    // 安全地弹出菜单：如果 win 已销毁，则使用焦点窗口
+    const targetWindow = win.isDestroyed() ? BrowserWindow.getFocusedWindow() : win
+    if (targetWindow && !targetWindow.isDestroyed()) {
+      menu.popup({ window: targetWindow })
+    } else {
+      menu.popup() // 回退到默认行为
     }
   })
 
   // Open the DevTools.
   if (!app.isPackaged) {
-    mainWindow.webContents.openDevTools()
+    win.webContents.openDevTools()
   }
 }
 

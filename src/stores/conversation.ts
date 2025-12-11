@@ -29,6 +29,22 @@ export const useConversationStore = defineStore('conversation', () => {
     return newCId
   }
 
+  const deleteConversation = async (id: number) => {
+    // 删除 conversation
+    await db.conversations.delete(id)
+    // 删除关联的 messages
+    await db.messages.where({ conversationId: id }).delete()
+    // 从 store 中移除
+    const index = items.value.findIndex((item) => item.id === id)
+    if (index !== -1) {
+      items.value.splice(index, 1)
+    }
+    // 如果删除的是当前选中的 conversation，重置 selectedId
+    if (selectedId.value === id) {
+      selectedId.value = -1
+    }
+  }
+
   return {
     items,
     selectedId,
@@ -36,5 +52,6 @@ export const useConversationStore = defineStore('conversation', () => {
     getConversationById,
     fetchConversations,
     createConversation,
+    deleteConversation,
   }
 })

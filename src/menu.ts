@@ -1,7 +1,15 @@
 import { Menu, BrowserWindow, app } from 'electron'
+import type { Language } from '@/types/base'
+import zhTranslations from './locales/zh.json'
+import enTranslations from './locales/en.json'
 
-export function setupMenu(mainWindow: BrowserWindow) {
-  console.log('Setting up menu...')
+const translations = {
+  zh: zhTranslations,
+  en: enTranslations,
+}
+
+export function setupMenu(mainWindow: BrowserWindow, language: Language = 'zh') {
+  console.log('Setting up menu with language:', language)
 
   // 基础模板，使用标准角色
   const template: Electron.MenuItemConstructorOptions[] = [
@@ -19,7 +27,7 @@ export function setupMenu(mainWindow: BrowserWindow) {
     // 定义应用程序菜单的子菜单
     const appSubmenu: Electron.MenuItemConstructorOptions[] = [
       {
-        label: '新建聊天',
+        label: translations[language].app.newChat,
         accelerator: 'CmdOrCtrl+N',
         click: () => {
           mainWindow.webContents.send('menu-new-conversation')
@@ -27,7 +35,7 @@ export function setupMenu(mainWindow: BrowserWindow) {
       },
       { type: 'separator' },
       {
-        label: '设置',
+        label: translations[language].app.settings,
         accelerator: 'CmdOrCtrl+,',
         click: () => {
           mainWindow.webContents.send('menu-open-settings')
@@ -52,7 +60,7 @@ export function setupMenu(mainWindow: BrowserWindow) {
       label: app.getName(),
       submenu: [
         {
-          label: '新建聊天',
+          label: translations[language].app.newChat,
           accelerator: 'CmdOrCtrl+N',
           click: () => {
             mainWindow.webContents.send('menu-new-conversation')
@@ -60,7 +68,7 @@ export function setupMenu(mainWindow: BrowserWindow) {
         },
         { type: 'separator' },
         {
-          label: '设置',
+          label: translations[language].app.settings,
           accelerator: 'CmdOrCtrl+,',
           click: () => {
             mainWindow.webContents.send('menu-open-settings')
