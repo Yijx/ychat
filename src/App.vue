@@ -25,7 +25,8 @@
 
 <script setup lang="ts">
 import { initProviders } from '@/db'
-import { onMounted, computed } from 'vue'
+import { onMounted, computed, onUnmounted } from 'vue'
+import { useRouter } from 'vue-router'
 import { useConversationStore } from '@/stores/conversation'
 import { useProviderStore } from '@/stores/provider'
 import { useConfigStore } from '@/stores/config'
@@ -35,7 +36,19 @@ import Button from '@/components/Button.vue'
 const conversationStore = useConversationStore()
 const providerStore = useProviderStore()
 const configStore = useConfigStore()
+const router = useRouter()
 const items = computed(() => conversationStore.items)
+
+// 菜单事件处理函数
+const handleNewConversation = () => {
+  console.log('Menu: New conversation')
+  router.push('/')
+}
+
+const handleOpenSettings = () => {
+  console.log('Menu: Open settings')
+  router.push('/settings')
+}
 
 onMounted(async () => {
   await configStore.loadConfig()
@@ -44,5 +57,16 @@ onMounted(async () => {
   providerStore.fetchProviders()
 
   console.log('App mounted, config:', configStore.config)
+
+  // 注册菜单事件监听
+  if (window.electronAPI) {
+    window.electronAPI.onMenuNewConversation(handleNewConversation)
+    window.electronAPI.onMenuOpenSettings(handleOpenSettings)
+  }
+})
+
+onUnmounted(() => {
+  // 清理监听器（如果 electronAPI 支持移除监听）
+  // 注意：当前预加载脚本未提供移除方法，但我们可以忽略，因为应用生命周期内不需要
 })
 </script>

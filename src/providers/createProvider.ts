@@ -11,17 +11,17 @@ const createProvider = (
   switch (providerName) {
     case 'qianfan':
       if (!providerConfig.accessKey || !providerConfig.secretKey) {
-        throw new Error('缺少千帆API配置：请在设置中配置 accessKey 和 secretKey')
+        throw new Error('缺少千帆API配置：请在应用设置中配置 accessKey 和 secretKey')
       }
       return createQianfanProvider(providerConfig.accessKey, providerConfig.secretKey)
     case 'dashscope':
       if (!providerConfig.apiKey || !providerConfig.baseUrl) {
-        throw new Error('缺少通义千问API配置：请在设置中配置 apiKey 和 baseUrl')
+        throw new Error('缺少通义千问API配置：请在应用设置中配置 apiKey 和 baseUrl')
       }
       return createOpenAIProvider(providerConfig.apiKey, providerConfig.baseUrl)
     case 'deepseek':
       if (!providerConfig.apiKey || !providerConfig.baseUrl) {
-        throw new Error('缺少DeepSeek API配置：请在设置中配置 apiKey 和 baseUrl')
+        throw new Error('缺少DeepSeek API配置：请在应用设置中配置 apiKey 和 baseUrl')
       }
       return createOpenAIProvider(providerConfig.apiKey, providerConfig.baseUrl)
     default:

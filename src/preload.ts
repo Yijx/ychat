@@ -14,4 +14,10 @@ contextBridge.exposeInMainWorld('electronAPI', {
   saveConfig: (config: AppConfig) => ipcRenderer.invoke('save-config', config),
   updateConfig: (partialConfig: Partial<AppConfig>) =>
     ipcRenderer.invoke('update-config', partialConfig),
+
+  // 菜单事件
+  onMenuNewConversation: (callback: () => void) =>
+    ipcRenderer.on('menu-new-conversation', () => callback()),
+  onMenuOpenSettings: (callback: () => void) =>
+    ipcRenderer.on('menu-open-settings', () => callback()),
 })

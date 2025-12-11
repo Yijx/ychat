@@ -1,6 +1,7 @@
 import type { CreateChatProps, AppConfig } from '@/types/base'
 import { app, BrowserWindow, ipcMain, protocol, net } from 'electron'
 import { createProvider } from '@/providers/createProvider'
+import { setupMenu } from '@/menu'
 import url from 'url'
 import fs from 'fs/promises'
 import path from 'node:path'
@@ -58,6 +59,8 @@ const createWindow = async () => {
   } else {
     mainWindow.loadFile(path.join(__dirname, `../renderer/${MAIN_WINDOW_VITE_NAME}/index.html`))
   }
+
+  setupMenu(mainWindow)
 
   // TIPS: 由于直接返回本地文件路径存在安全风险，通过自定义协议（由file://改为safe-file://）读取文件内容并返回
   protocol.handle('safe-file', async (request) => {
