@@ -1,7 +1,7 @@
 # YChat - AI 聊天客户端
 
 <p align="center">
-  <img src="assets/icon.icns" alt="YChat Logo" width="100" height="100">
+  <img src="assets/icon.png" alt="YChat Logo" width="100" height="100">
 </p>
 
 <p align="center">
