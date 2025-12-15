@@ -25,12 +25,12 @@ export { useI18n } from 'vue-i18n'
 
 // 更新应用语言
 export const updateAppLanguage = (language: Language) => {
-  console.log('Updating i18n locale to:', getCurrentLanguage())
-  console.log(typeof i18n.global.locale, i18n.mode)
+  // console.log('Updating i18n locale to:', getCurrentLanguage())
+  // console.log(typeof i18n.global.locale, i18n.mode)
   // 确保使用 .value 赋值以触发响应式更新
   i18n.global.locale = language
   // 额外记录当前 locale 用于调试
-  console.log('Current i18n locale:', i18n.global.locale)
+  // console.log('Current i18n locale:', i18n.global.locale)
 }
 
 // 获取当前语言

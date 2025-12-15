@@ -56,8 +56,6 @@ onMounted(async () => {
   conversationStore.fetchConversations()
   providerStore.fetchProviders()
 
-  console.log('App mounted, config:', configStore.config)
-
   // 注册菜单事件监听
   if (window.electronAPI) {
     window.electronAPI.onMenuNewConversation(handleNewConversation)

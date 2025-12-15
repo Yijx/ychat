@@ -24,8 +24,8 @@
 import type { ConversationProps } from '@/types/base'
 import { useConversationStore } from '@/stores/conversation'
 import { useRouter } from 'vue-router'
+import { onMounted } from 'vue'
 import dayjs from 'dayjs'
-import { onMounted, onUnmounted } from 'vue'
 
 const { items = [] } = defineProps<{
   items: ConversationProps[]

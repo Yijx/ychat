@@ -1,7 +1,7 @@
+import type { AppConfig } from '@/types/base'
 import { defineStore } from 'pinia'
 import { ref, computed } from 'vue'
-import type { AppConfig } from '@/types/base'
-import { updateAppLanguage, getCurrentLanguage } from '@/locales/i18n'
+import { updateAppLanguage } from '@/locales/i18n'
 
 export const useConfigStore = defineStore('config', () => {
   const config = ref<AppConfig>({

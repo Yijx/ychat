@@ -10,8 +10,7 @@
 </template>
 
 <script setup lang="ts">
-import type { ProviderProps } from '@/types/base'
-import { ref, onMounted, computed } from 'vue'
+import { ref, computed } from 'vue'
 import { db } from '@/db'
 import { useRouter } from 'vue-router'
 import { useConversationStore } from '@/stores/conversation'
